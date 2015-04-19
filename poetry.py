@@ -121,7 +121,7 @@ if __name__ == "__main__":
 		iterator = setupTwitter()
 		generateMultiPoetry(forms,iterator)
 	elif len(sys.argv)==2 and len(sys.argv[1])>4 and sys.argv[1][:4]=="-dev":
-		setupSaveFile(sys.argv[1:])
+		setupSaveFile(sys.argv[1][1:])
 		formName = sys.argv[1][4:]
 		exec ("import "+formName)
 		exec ("form = "+formName+".form()")
