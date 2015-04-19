@@ -1,9 +1,13 @@
+#!/usr/bin/python
 import os
 import sys
 import time
+import codecs
 from twitter import *
 
 language = ["en","und"]
+saveDirName = "./saved_poems/"
+saveFileName = None
 
 def setupTwitter():
 	CONSUMER_CREDENTIALS = open('.consumer_credentials')
@@ -26,7 +30,7 @@ def generatePoetry(form, getIterator):
 				form.readTweet(tweetText)
 				poemText = form.build()
 				if not poemText==None:
-					print(poemText)
+					printpoem(poemText)
 		time.sleep(10) #If the stream runs out or hits an error, take a break and restart.
 
 def generateMultiPoetry(forms, iterator):
@@ -39,7 +43,20 @@ def generateMultiPoetry(forms, iterator):
 				if not poemText==None and len(poemText)>1:
 					if poemText[-1]!="\n":
 						poemText+="\n"
-					print(poemText)
+					printpoem(poemText)
+
+def setupSaveFile(forms):
+	if not os.path.exists(saveDirName):
+		os.makedirs(saveDirName)
+	global saveFileName
+	saveFileName = saveDirName+("".join(forms)+"-"+time.strftime("%Y-%m-%d")+".txt")
+	
+
+def printpoem(text):
+	print(text)
+	if saveFileName!=None:
+		with codecs.open(saveFileName,encoding="utf-8",mode="a") as saveFile:
+			saveFile.write(text+"\n")
 
 poemforms = ["haiku","because","acrostic","atoz","couplet",
 		"iambicpentameter","limerick","alliterative"]
@@ -93,15 +110,24 @@ def usage():
 
 if __name__ == "__main__":
 	if len(sys.argv)==2 and (sys.argv[1] in poemforms or sys.argv[1] in otherforms):
+		setupSaveFile(sys.argv[1:])
 		form = getForm(sys.argv[1])
 		generatePoetry(form,setupTwitter)
 	elif len(sys.argv)==2 and sys.argv[1] == "all":
+		setupSaveFile(["all"])
 		forms = []
 		for form in poemforms:
 			forms.append(getForm(form))
 		iterator = setupTwitter()
 		generateMultiPoetry(forms,iterator)
+	elif len(sys.argv)==2 and len(sys.argv[1])>4 and sys.argv[1][:4]=="-dev":
+		setupSaveFile(sys.argv[1:])
+		formName = sys.argv[1][4:]
+		exec ("import "+formName)
+		exec ("form = "+formName+".form()")
+		generatePoetry(form,setupTwitter)
 	elif len(sys.argv)>2:
+		setupSaveFile(sys.argv[1:])
 		forms = []
 		for arg in sys.argv[1:]:
 			form = getForm(arg)
