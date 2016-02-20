@@ -2,6 +2,9 @@ import wordtools
 import poem
 
 class form(poem.form):
+	syllables = "syllableCount"
+	text = "text"
+
 	def __init__(self):
 		self.data={}
 		self.data[5]=[]
@@ -11,12 +14,12 @@ class form(poem.form):
 		clean = wordtools.clean(tweet)
 		syllableCount = wordtools.syllableCount(clean)
 		if syllableCount==7 or syllableCount==5:
-			return [syllableCount, tweet]
+			return {self.syllables:syllableCount, self.text:tweet}
 		else:
 			return None
 
 	def save(self,cleaned):
-		self.data[cleaned[0]].append(cleaned[1])
+		self.data[cleaned[self.syllables]].append(cleaned[self.text])
 	
 	def build(self):
 		if len(self.data[5])>=2 and len(self.data[7])>=1:
