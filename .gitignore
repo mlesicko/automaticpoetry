@@ -52,3 +52,8 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# User data
+.consumer_credentials
+.my_app_credentials
+saved_poems/
+

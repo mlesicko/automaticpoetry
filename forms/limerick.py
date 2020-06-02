@@ -1,7 +1,7 @@
 import wordtools
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class LimerickForm(Form):
 	def __init__(self):
 		self.data   = {6 : {}, 9 : {}}
 		self.pairs = []

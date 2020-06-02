@@ -1,4 +1,4 @@
-Automatic Poetry AKA The Loggerest Poem in the World
+Automatic Poetry
 ===============
 
 You'll need these packages in order to run Automatic Poetry:

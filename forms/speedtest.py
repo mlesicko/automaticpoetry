@@ -1,6 +1,6 @@
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class SpeedtestForm(Form):
 	def __init__(self):
 		self.counter = 0
 

@@ -1,7 +1,7 @@
 import wordtools
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class IambicPentameterForm(Form):
 	rhyme = "rhyme"
 	clean = "clean"
 	text = "text"

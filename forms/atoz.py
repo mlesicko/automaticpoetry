@@ -1,8 +1,8 @@
 import wordtools
 import random
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class AtozForm(Form):
 	def __init__(self):
 		self.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		self.data = {}

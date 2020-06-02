@@ -1,7 +1,7 @@
 import wordtools
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class HaikuForm(Form):
 	syllables = "syllableCount"
 	text = "text"
 

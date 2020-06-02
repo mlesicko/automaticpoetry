@@ -1,7 +1,7 @@
 import wordtools
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class RhymingCoupletForm(Form):
 	rhyme = "rhyme"
 	syllables = "syllables"
 	clean = "clean"
@@ -14,7 +14,7 @@ class form(poem.form):
 	def validate(self,tweet):
 		clean = wordtools.clean(tweet)
 		syl = wordtools.syllableCount(clean)
-		if syl>0:
+		if syl>3 and syl<20:
 			rhyme = wordtools.getRhyme(clean[-1])
 			if rhyme!= None:
 				return {self.rhyme:rhyme,self.syllables:syl,self.clean:clean,self.text:tweet}

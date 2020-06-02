@@ -1,7 +1,7 @@
 import wordtools
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class AlliterativeForm(Form):
 	def __init__(self):
 		self.line = ""
 		self.ALLITERATIVE_FACTOR=.4

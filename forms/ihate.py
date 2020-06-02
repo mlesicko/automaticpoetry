@@ -1,7 +1,7 @@
 import wordtools
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class IHateForm(Form):
 	def __init__(self):
 		self.data=None
 		self.testString="I HATE"

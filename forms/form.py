@@ -1,4 +1,4 @@
-class form:
+class Form:
 	def readTweet(self,tweet):
 		clean = self.validate(tweet)
 		if clean!=None:
@@ -9,3 +9,6 @@ class form:
 
 	def save(self,clean):
 		pass
+
+	def build(self):
+		return None

@@ -1,8 +1,8 @@
 import wordtools
 import random
-import poem
+from forms.form import Form
 
-class form(poem.form):
+class Markov2Form(Form):
 
 	def __init__(self):
 		self.data={}
@@ -12,15 +12,8 @@ class form(poem.form):
 
 	def validate(self,tweet):
 		cleaned = wordtools.clean(tweet)
-		if wordtools.validate(cleaned):
-			sounds = []
-			for word in cleaned:
-				sounds +=wordtools.getPronunciationNoStress(word)+[" "]
-			if len(sounds)>4:
-				sounds.pop() #remove the last space
-				return sounds
-			else:
-				return None
+		if wordtools.validate(cleaned) and len(cleaned)>=3:
+			return cleaned
 		else:
 			return None
 
@@ -33,7 +26,7 @@ class form(poem.form):
 		a.insert(0,"")
 		a.append("")
 		for i in range(0,len(a)-2):
-			pred = a[i]+a[i+1]
+			pred = a[i]+" "+a[i+1]
 			succ = a[i+2]
 			if not pred in self.data:
 				self.data[pred]={}
@@ -62,10 +55,11 @@ class form(poem.form):
 				if total>choice:
 					penWord=ultWord
 					ultWord=word
-					s+=word
+					s+=word+" "
 					break
-			lastWord=penWord+ultWord
+			lastWord=penWord+" "+ultWord
 			if ultWord=="":
+				s = s[:-2] #The last word and empty string each add an extra space
 				if tuple(s.split(" ")) not in self.tweetcatalog:
 					break
 				else:
