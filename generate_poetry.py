@@ -1,5 +1,6 @@
 import time
 import codecs
+import wordtools
 
 language = ["en","und"]
 
@@ -9,7 +10,8 @@ def generatePoetry(form, getTwitter, saveFileName=None):
        for tweet in twitter:
            if "text" in tweet and "lang" in tweet and tweet["lang"] in language:
                tweetText = tweet["text"]
-               form.readTweet(tweetText)
+               fixedText = wordtools.fixTextErrors(tweetText)
+               form.readTweet(fixedText)
                poemText = form.build()
                if not poemText==None:
                    printpoem(poemText)

@@ -8,8 +8,18 @@ for line in f:
 	pieces = line.split("  ") #two spaces
 	cmudict[pieces[0]]=pieces[1][:-1]
 
-def clean(word):
-	clean = ''.join(c for c in word if c.isalnum() or c==" ")
+def fixTextErrors(text):
+	#fix ampersands being rendered with web encoding
+	return text.replace("&amp;","&")
+
+def fixUnreadableCharacters(text):
+	#read ampersands as "AND"
+	return text.replace("&", " and ")
+
+
+def clean(text):
+	fixedText = fixUnreadableCharacters(text)
+	clean = ''.join(c for c in fixedText if c.isalnum() or c==" ")
 	cleanArray = []
 	for word in clean.split(" "):
 		if len(word)>0 and len(word)==len(''.join(c for c in word if c in "0123456789")):
