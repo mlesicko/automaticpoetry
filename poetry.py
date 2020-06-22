@@ -7,9 +7,6 @@ from twitter import *
 from generate_poetry import generatePoetry, generateMultiPoetry
 from handle_forms import getForm, poem_forms, tool_forms, other_forms
 
-saveDirName = "./saved_poems/"
-saveFileName = None
-
 def setupTwitter():
 	CONSUMER_CREDENTIALS = open('.consumer_credentials')
 	CONSUMER_KEY = CONSUMER_CREDENTIALS.readline()[:-1]
@@ -23,10 +20,11 @@ def setupTwitter():
 	return stream.statuses.sample()
 
 def setupSaveFile(forms):
+	saveDirName = "./saved_poems/"
 	if not os.path.exists(saveDirName):
 		os.makedirs(saveDirName)
-	global saveFileName
 	saveFileName = saveDirName+("".join(forms)+"-"+time.strftime("%Y-%m-%d")+".txt")
+	return saveFileName
 	
 def usage():
 	print("Usage: poetry.py FORM...")
@@ -35,8 +33,8 @@ def usage():
 	print("Tools:\n\t"+"\n\t".join(sorted(tool_forms)))
 
 if __name__ == "__main__":
+	saveFileName = setupSaveFile(sys.argv[1:])
 	if len(sys.argv)==2:
-		setupSaveFile(sys.argv[1:])
 		form = getForm(sys.argv[1])
 		if form != None:
 			generatePoetry(form,setupTwitter,saveFileName)
@@ -44,7 +42,6 @@ if __name__ == "__main__":
 			print("Error: " + sys.argv[1] + " is not a supported form")
 			usage()
 	elif len(sys.argv)>2:
-		setupSaveFile(sys.argv[1:])
 		forms = []
 		for arg in sys.argv[1:]:
 			form = getForm(arg)
