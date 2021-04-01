@@ -2,9 +2,24 @@ import time
 import codecs
 import wordtools
 
-language = ["en","und"]
+language = ["en"]
 
-def generatePoetry(form, getTwitter, saveFileName=None):
+def doUntilStopped(f):
+   while True:
+       try:
+           f()
+       except Exception:
+           time.sleep(10)
+       except KeyboardInterrupt:
+           break
+
+def generatePoetry(form, getTwitter, saveFileName):
+    doUntilStopped(lambda: _generatePoetry(form, getTwitter, saveFileName))
+
+def generateMultiPoetry(form, getTwitter, saveFileName):
+    doUntilStopped(lambda: _generateMultiPoetry(form, getTwitter, saveFileName))
+
+def _generatePoetry(form, getTwitter, saveFileName=None):
    while True:
        twitter = getTwitter()
        for tweet in twitter:
@@ -19,7 +34,7 @@ def generatePoetry(form, getTwitter, saveFileName=None):
        time.sleep(10) #If the stream runs out or hits an error, take a break and restart.
 
 
-def generateMultiPoetry(forms, getTwitter, saveFileName=None):
+def _generateMultiPoetry(forms, getTwitter, saveFileName=None):
     while True:
         twitter = getTwitter()
         for tweet in twitter:
