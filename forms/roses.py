@@ -1,3 +1,4 @@
+import math
 import wordtools
 from forms.form import Form
 
@@ -16,9 +17,13 @@ class RosesForm(Form):
 
 	def build(self):
 		if self.data != None:
-			verse = self.data
+			verse = self.data.split()
+			midpoint = math.ceil(len(verse)/2)
 			self.data = None
-			return "Roses are red,\nViolets are blue,\n" + verse + "\n"
+			return ("Roses are red,\n"
+				"Violets are blue,\n"
+				+ " ".join(verse[:midpoint]) + "\n"
+				+ " ".join(verse[midpoint:]) + "\n")
 		else :
 			return None
 			
