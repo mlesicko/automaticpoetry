@@ -2,7 +2,7 @@ import time
 import codecs
 import wordtools
 
-language = ["en"]
+SUPPORTED_LANGUAGES = ["en"]
 
 def doUntilStopped(f):
    while True:
@@ -23,7 +23,7 @@ def _generatePoetry(form, getTwitter, saveFileName=None):
    while True:
        twitter = getTwitter()
        for tweet in twitter:
-           if "text" in tweet and "lang" in tweet and tweet["lang"] in language:
+           if _isTweetUsable(tweet):
                tweetText = tweet["text"]
                fixedText = wordtools.fixTextErrors(tweetText)
                form.readTweet(fixedText)
@@ -38,7 +38,7 @@ def _generateMultiPoetry(forms, getTwitter, saveFileName=None):
     while True:
         twitter = getTwitter()
         for tweet in twitter:
-            if "text" in tweet and "lang" in tweet and tweet["lang"] in language:
+            if _isTweetUsable(tweet):
                 tweetText = tweet["text"]
                 for form in forms:
                     form.readTweet(tweetText)
@@ -49,6 +49,19 @@ def _generateMultiPoetry(forms, getTwitter, saveFileName=None):
                         printpoem(poemText)
                         savepoem(poemText, saveFileName)
         time.sleep(10) #If the stream runs out or hits an error, take a break and restart.
+
+def _isTweetUsable(tweet):
+    if "lang" not in tweet:
+        return False
+    if tweet["lang"] not in SUPPORTED_LANGUAGES:
+        return False 
+    if "text" not in tweet:
+        return False
+    if len(tweet["text"]) == 0:
+        return False
+    if tweet["text"][0] == "@":
+        return False
+    return True
 
 def printpoem(text):
     print(text)
